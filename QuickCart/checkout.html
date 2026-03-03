@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickCart - Checkout</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f2f4f7;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  display:flex;
+  align-items:center;
+  padding:15px 5%;
+  gap:20px;
+}
+
+.location{
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(12px);
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:14px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  white-space:nowrap;
+}
+
+.search{
+  flex:1;
+  max-width:600px;
+  height:44px;
+  border:none;
+  border-radius:22px;
+  padding:0 20px;
+  outline:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.icons{
+  margin-left:auto;
+  display:flex;
+  gap:18px;
+}
+
+.icons span{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* ================= CHECKOUT PAGE ================= */
+
+.checkout-page{
+  max-width:1100px;
+  margin:40px auto;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:30px;
+}
+
+.checkout-section{
+  background:white;
+  padding:25px;
+  border-radius:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+  margin-bottom:20px;
+}
+
+.checkout-section h3{
+  margin-bottom:15px;
+}
+
+.input-group{
+  margin-bottom:15px;
+}
+
+.input-group input,
+.input-group textarea,
+.input-group select{
+  width:100%;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  outline:none;
+}
+
+.radio-group{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.summary{
+  background:white;
+  padding:25px;
+  border-radius:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+  height:fit-content;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  margin:10px 0;
+}
+
+.total{
+  font-weight:bold;
+  font-size:18px;
+  margin-top:15px;
+}
+
+.place-order{
+  width:100%;
+  padding:15px;
+  margin-top:20px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#9ac79a,#75b075);
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.place-order:hover{
+  transform:scale(1.03);
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+/* ================= SUCCESS POPUP ================= */
+
+.success-overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#4CAF50,#2e7d32);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  visibility:hidden;
+  transition:0.4s;
+  z-index:2000;
+}
+
+.success-overlay.show{
+  opacity:1;
+  visibility:visible;
+}
+
+.success-box{
+  text-align:center;
+  color:white;
+  animation:pop 0.5s ease;
+}
+
+.tick{
+  font-size:80px;
+  background:white;
+  color:#4CAF50;
+  width:120px;
+  height:120px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  margin:0 auto 20px;
+  font-weight:bold;
+}
+
+.success-box h2{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.success-box p{
+  font-size:16px;
+}
+
+@keyframes pop{
+  0%{transform:scale(0.6);opacity:0;}
+  100%{transform:scale(1);opacity:1;}
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+  .navbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .checkout-page{
+    grid-template-columns:1fr;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="icons">
+    <span>🛒</span>
+    <span>☰</span>
+  </div>
+</div>
+
+<div class="checkout-page">
+
+  <!-- LEFT SIDE -->
+  <div>
+
+    <!-- ADDRESS -->
+    <div class="checkout-section">
+      <h3>Delivery Address</h3>
+
+      <div class="input-group">
+        <input type="text" placeholder="Full Name">
+      </div>
+
+      <div class="input-group">
+        <input type="text" placeholder="Phone Number">
+      </div>
+
+      <div class="input-group">
+        <textarea placeholder="Full Address"></textarea>
+      </div>
+    </div>
+
+    <!-- DELIVERY TIME -->
+   <div class="checkout-section">
+  <h3>Delivery Information</h3>
+
+  <div style="
+    background:#f2f4f7;
+    padding:15px;
+    border-radius:15px;
+    font-size:14px;
+  ">
+    ⚡ Estimated Delivery Time: <strong>10–20 Minutes</strong><br><br>
+    Delivery time is fixed by the seller and cannot be changed.
+  </div>
+</div>
+
+    <!-- PAYMENT -->
+    <div class="checkout-section">
+      <h3>Payment Method</h3>
+
+      <div class="radio-group">
+        <label><input type="radio" name="payment" checked> Cash on Delivery</label>
+        <label><input type="radio" name="payment"> UPI</label>
+        <label><input type="radio" name="payment"> Credit / Debit Card</label>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT SIDE SUMMARY -->
+  <div class="summary">
+
+    <h3>Order Summary</h3>
+
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <span>₹269</span>
+    </div>
+
+    <div class="summary-row">
+      <span>Delivery Fee</span>
+      <span>₹20</span>
+    </div>
+
+    <div class="summary-row">
+      <span>Discount</span>
+      <span>- ₹30</span>
+    </div>
+
+    <div class="summary-row total">
+      <span>Total</span>
+      <span>₹259</span>
+    </div>
+
+    <button class="place-order" onclick="placeOrder()">Place Order</button>
+
+  </div>
+
+</div>
+
+ 
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="tick">✔</div>
+    <h2>Order Placed Successfully!</h2>
+    <p>Your items will be delivered soon 🚀</p>
+  </div>
+</div>
+
+<script>
+
+function placeOrder(){
+  document.getElementById("successOverlay").classList.add("show");
+
+  // Auto redirect after 3 seconds (optional)
+  setTimeout(()=>{
+    window.location.href = "index.html"; // change if needed
+  },3000);
+}
+
+</script>
+</body>
+</html>

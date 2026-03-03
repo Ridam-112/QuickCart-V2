@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Grocery UI</title>
+
+<style>
+ 
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f2f4f7;
+  
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 5%
+  position relative;
+}
+
+.location{
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(12px);
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:14px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.search{
+  width:100%;
+  max-width:653px;
+  height:44px;
+  border:none;
+  border-radius:22px;
+  padding:0 20px;
+  outline:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.icons{
+  display:flex;
+  gap:15px;
+}
+
+.icons span{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  width:95%;
+  max-width:1050px;
+  height:300px;
+  margin:20px auto;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.hero img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:0.5s ease;
+}
+
+/* ================= DELIVERY ================= */
+
+.delivery{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  margin:20px 0;
+}
+
+.delivery-card{
+  background:white;
+  padding:20px 30px;
+  border-radius:18px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  transition:0.3s;
+  height: 100px;
+  width: 200px;
+  text-align: center;
+}
+
+.delivery-card:hover{
+  transform:translateY(-5px);
+}
+
+/* ================= CATEGORIES ================= */
+
+.categories{
+  max-width:1050px;
+  margin:0 auto 40px auto;
+  display:grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap:20px;
+}
+
+.main-category{
+  grid-row: span 2;
+  background: linear-gradient(135deg,#9ac79a,#75b075);
+  border-radius:25px;
+  padding:30px;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  transition:0.3s;
+}
+
+.main-category:hover{
+  transform:scale(1.02);
+}
+
+.category{
+  padding:20px;
+  border-radius:20px;
+  transition:0.3s;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+}
+.glass-btn{
+  margin-top:15px;
+  padding:12px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.3);
+  backdrop-filter:blur(10px);
+  text-align:center;
+  cursor:pointer;
+}
+
+
+.category:hover{
+  transform:translateY(-6px);
+  box-shadow:0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* GRADIENTS */
+.restaurants{ background:linear-gradient(135deg,#ffd8b5,#ffb084); }
+.cosmetics{ background:linear-gradient(135deg,#ffd6e7,#ff9ec5); }
+.pharmacy{ background:linear-gradient(135deg,#d7e6ff,#a8c6ff); }
+.garments{ background:linear-gradient(135deg,#e5d4ff,#c5a7ff); }
+.gadgets{ background:linear-gradient(135deg,#e4e4e4,#cfcfcf); }
+.furniture{ background:linear-gradient(135deg,#d4f1f4,#a6e3e9); }
+
+/* ================= TRENDING ================= */
+
+.trending{
+  max-width:1050px;
+  margin:0 auto;
+}
+
+.trend-grid{
+  display:grid;
+  grid-template-columns: repeat(4,1fr);
+  gap:20px;
+}
+
+.trend-item{
+  height:180px;
+  border-radius:20px;
+  background:#dcdcdc;
+  transition:0.3s;
+}
+
+.trend-item:hover{
+  transform:scale(1.05);
+  box-shadow:0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* ================= OVERLAY ================= */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(3px);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:998;
+}
+
+.overlay.show{
+  opacity:1;
+  visibility:visible;
+}
+
+/* ================= DRAWER ================= */
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  width:320px;
+  max-width:85%;
+  height:100%;
+  background:#f7f7f7;
+  padding:20px;
+  box-shadow:-5px 0 25px rgba(0,0,0,0.2);
+  transition:0.35s ease;
+  z-index:999;
+  display:flex;
+  flex-direction:column;
+
+  transform:translateX(100%);   /* fully hidden */
+}
+
+.drawer.open{
+  transform:translateX(0);      /* slide in */
+}
+.drawer-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.profile{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.profile img{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+}
+
+.close-btn{
+  font-size:20px;
+  cursor:pointer;
+}
+
+.menu{
+  margin-top:20px;
+}
+
+.menu-item{
+  padding:12px;
+  border-radius:14px;
+  cursor:pointer;
+  margin-bottom:6px;
+  transition:0.2s;
+}
+
+.menu-item:hover{
+  background:rgba(0,0,0,0.05);
+}
+
+.menu-item.active{
+  background:#e7e0ff;
+  border:2px solid #7c5cff;
+  font-weight:bold;
+}
+
+.logout{
+  color:#d32f2f;
+}
+
+hr{
+  border:none;
+  border-top:1px solid #ddd;
+  margin:10px 0;
+}
+@media(max-width:768px){
+
+  .navbar{
+    flex-direction:column;
+    gap:15px;
+  }
+
+  .search{
+    width: 70%;
+    margin-right: 55px;
+  }
+
+  .hero{
+    height:200px;
+  }
+
+  .categories{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .main-category{
+    grid-column:span 2;
+    grid-row:span 1;
+  }
+
+  .trend-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+ .icons{
+     margin-left: 300px;
+     margin-top: -50px;
+ }
+  .drawer{
+    width:85%;
+  }
+}
+ 
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="location">📍 Home - Chattarpally Club</div>
+  <input class="search" placeholder="search for groceries , food...">
+  <div class="icons">
+    <span onclick="goToCart()">🛒</span>
+    <span onclick="openDrawer()">☰</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <img id="slider" src="https://images.unsplash.com/photo-1607082349566-187342175e2f">
+</div>
+
+<!-- DELIVERY -->
+<div class="delivery">
+  <div class="delivery-card">⚡ Flash<br>10-20min</div>
+  <div class="delivery-card">🚀 Express<br>2 hrs</div>
+  <div class="delivery-card">🚚 Standard<br>2-3 days</div>
+</div>
+
+<div class="categories"> 
+  <div class="main-category" onclick="FarmerTo()">
+    <h2>KRISHAK DIRECT</h2>
+    <p>🌿 Veg & Fruit</p>
+    <button class="glass-btn">Fresh From Farmers</button>
+  </div>
+  <a href="restaurant.html" target="_blank" style="text-decoration:none; color:inherit;">
+  <div class="category restaurants" >🍔 Restaurants</div>  </a>
+  <a href="cosmetics.html" target="_blank" style="text-decoration:none; color:inherit;">
+  <div class="category cosmetics">💄 Cosmetics</div> </a>
+  <a href="pharmacy.html" target="_blank" style="text-decoration:none; color:inherit;">
+  <div class="category pharmacy">💊 Pharmacy</div> </a>
+  <a href="garments.html" target="_blank" style="text-decoration:none; color:inherit;">
+  <div class="category garments">👗 Garments</div> </a>
+  <a href="gadgets.html" target="_blank" style="text-decoration:none; color:inherit;">
+  <div class="category gadgets">📱 Gadgets</div></a>
+  <a href="furniture.html" target="_blank" style="text-decoration:none; color:inherit;">
+  <div class="category furniture">🛋 Furniture</div> </a>
+</div>
+
+<div class="trending">
+  <h2>Trending Deals</h2>
+  <div class="trend-grid">
+    <div class="trend-item"></div>
+    <div class="trend-item"></div>
+    <div class="trend-item"></div>
+    <div class="trend-item"></div>
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="profile">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg">
+      <div>
+        <b>Rahul Sharma</b><br>
+        <small>rahul.s</small>
+      </div>
+    </div>
+    <span class="close-btn" onclick="closeDrawer()">✕</span>
+  </div>
+
+  <div class="menu">
+    <div class="menu-item active" onclick="closeDrawer()">⚡ Home</div>
+    <div class="menu-item" onclick="OrderTo()">🛒 My Orders</div>
+    <div class="menu-item" onclick="TrackDelivery()">📍 Track Delivery<br><small>Arriving 15 mins</small></div>
+
+    <hr>
+
+
+    <hr>
+
+    <div class="menu-item" onclick="closeDrawer()">👤 My Profile</div>
+    <div class="menu-item" onclick="closeDrawer()">⚙ Settings</div>
+    <div class="menu-item" onclick="closeDrawer()">❓ Help & Support</div>
+
+    <hr>
+
+    <div class="menu-item logout" onclick="closeDrawer()">⏎ Logout</div>
+  </div>
+</div>
+
+<script>
+/* AUTO HERO SLIDER */
+/* AUTO HERO SLIDER - SMOOTH FADE */
+const images=[
+"https://images.unsplash.com/photo-1607082349566-187342175e2f",
+"https://images.unsplash.com/photo-1607083206968-13611e3d76db",
+"https://images.unsplash.com/photo-1607082350899-7e105aa886ae"
+];
+
+let index=0;
+let slider=document.getElementById("slider");
+
+setInterval(()=>{
+  slider.style.opacity=0;
+
+  setTimeout(()=>{
+    index=(index+1)%images.length;
+    slider.src=images[index];
+    slider.style.opacity=1;
+  },500);
+
+},3000);
+
+/* DRAWER FUNCTIONS */
+function openDrawer(){
+  document.getElementById("drawer").classList.add("open");
+  document.getElementById("overlay").classList.add("show");
+}
+
+function closeDrawer(){
+  document.getElementById("drawer").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
+}  //Hello bro
+function goToCart(){
+  window.location.href = "cart.html";
+}
+function FarmerTo(){
+  window.location.href = "farmer.html";
+}
+function OrderTo(){
+  window.location.href = "orders.html";
+} 
+function TrackDelivery(){
+  window.location.href = "track-order.html";
+}
+</script>
+
+</body>
+</html>

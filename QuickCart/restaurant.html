@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickCart - Restaurants</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#0f0f0f;
+  color:white;
+  overflow-x:hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  padding:20px 5%;
+}
+
+/* Top Row */
+.top-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+/* Location */
+.location{
+  background:rgba(255,255,255,0.08);
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:14px;
+  white-space:nowrap;
+}
+
+/* Icons */
+.icons{
+  display:flex;
+  gap:20px;
+}
+
+.icons span{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* Search */
+.search-wrapper{
+  width:100%;
+
+}
+
+.search-wrapper input{
+  width:100%;
+  height:50px;
+  border:none;
+  border-radius:25px;
+  padding:0 20px;
+  background:#1e1e1e;
+  color:white;
+  outline:none;
+  font-size:15px;
+  transition:0.3s;
+}
+
+.search-wrapper input:focus{
+  background:#252525;
+}
+/* ===== Desktop Layout ===== */
+@media(min-width:769px){
+
+  .search-wrapper{
+    width:70%;
+    margin:0 auto;   /* centers it */
+  }
+  .icons{
+    align-self:auto;
+  }
+}
+
+/* ================= HEADER ================= */
+
+.header{
+  padding:30px 5%;
+}
+
+.header h1{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.header p{
+  color:#aaa;
+}
+
+/* ================= RESTAURANT GRID ================= */
+
+.restaurant-grid{
+  padding:20px 5% 60px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:25px;
+}
+
+/* ================= CARD ================= */
+
+.restaurant-card{
+  background:#1a1a1a;
+  border-radius:20px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:0.3s;
+  position:relative;
+}
+
+.restaurant-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+}
+
+.restaurant-card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  display:block;
+}
+
+.offer{
+  position:absolute;
+  top:12px;
+  left:12px;
+  background:#ff4d4d;
+  padding:5px 10px;
+  border-radius:15px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.card-content{
+  padding:15px;
+}
+
+.card-content h3{
+  margin-bottom:6px;
+}
+
+.details{
+  font-size:13px;
+  color:#aaa;
+  margin-bottom:10px;
+}
+
+.rating-time{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.rating{
+  background:#28a745;
+  padding:4px 8px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.time{
+  font-size:13px;
+  color:#ccc;
+}
+/* ================= RESTAURANT MENU PAGE ================= */
+
+.restaurant-menu{
+  position:fixed;
+  top:0;
+  left:100%;
+  width:100%;
+  height:100%;
+  background:#0f0f0f;
+  overflow-y:auto;
+  transition:0.4s ease;
+  z-index:2000;
+}
+
+.restaurant-menu.active{
+  left:0;
+}
+
+/* Header */
+.menu-header{
+  padding:20px 5%;
+  font-size:18px;
+  cursor:pointer;
+}
+
+/* Banner */
+.restaurant-banner{
+  position:relative;
+}
+
+.restaurant-banner img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+}
+
+.banner-info{
+  padding:20px 5%;
+}
+
+.banner-info h2{
+  font-size:24px;
+  margin-bottom:6px;
+}
+
+.banner-info p{
+  color:#aaa;
+  margin-bottom:6px;
+}
+
+.menu-rating{
+  font-size:14px;
+  color:#28a745;
+}
+
+/* Dish List */
+.dish-list{
+  padding:20px 5% 60px;
+}
+
+.dish-item{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:30px;
+  border-bottom:1px solid #1e1e1e;
+  padding-bottom:20px;
+}
+
+.dish-details{
+  width:60%;
+}
+
+.dish-details h3{
+  margin:8px 0;
+}
+
+.dish-details p{
+  font-weight:bold;
+  margin-bottom:6px;
+}
+
+.dish-details span{
+  font-size:13px;
+  color:#aaa;
+}
+
+.veg{
+  color:#28a745;
+  font-size:14px;
+}
+
+.nonveg{
+  color:#ff4d4d;
+  font-size:14px;
+}
+
+/* Dish Image */
+.dish-image{
+  position:relative;
+  width:120px;
+}
+
+.dish-image img{
+  width:100%;
+  height:100px;
+  object-fit:cover;
+  border-radius:12px;
+}
+
+.dish-image button{
+  position:absolute;
+  bottom:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:6px 14px;
+  border:none;
+  background:#ff4d4d;
+  color:white;
+  border-radius:20px;
+  cursor:pointer;
+  font-size:13px;
+}
+/* ================= DRAWER ================= */
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:-320px;
+  width:300px;
+  height:100%;
+  background:#121212;
+  z-index:2000;
+  transition:0.35s ease;
+  display:flex;
+  flex-direction:column;
+  box-shadow:-5px 0 25px rgba(0,0,0,0.7);
+}
+
+.drawer.active{
+  right:0;
+}
+
+/* Header */
+.drawer-header{
+  padding:20px;
+  border-bottom:1px solid #1f1f1f;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.profile img{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.profile small{
+  color:#aaa;
+}
+
+.close-btn{
+  font-size:20px;
+  cursor:pointer;
+}
+
+/* Menu */
+.menu{
+  padding:10px 0;
+  overflow-y:auto;
+  flex:1;
+}
+
+.menu-item{
+  padding:14px 20px;
+  font-size:15px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.menu-item small{
+  font-size:12px;
+  color:#888;
+}
+
+.menu-item:hover{
+  background:#1e1e1e;
+  padding-left:25px;
+}
+
+.menu-item.active{
+  background:#1a1a1a;
+  color:#ff4d4d;
+}
+
+.menu hr{
+  border:none;
+  border-top:1px solid #1f1f1f;
+  margin:10px 0;
+}
+
+.logout{
+  color:#ff4d4d;
+}
+
+/* Overlay */
+.overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:1900;
+}
+
+.overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+/* ================= SIDE NAVBAR ================= */
+
+.sidebar{
+  position:fixed;
+  top:0;
+  right:-280px;
+  width:280px;
+  height:100%;
+  background:#111;
+  padding:30px 20px;
+  transition:0.3s ease;
+  z-index:1000;
+  box-shadow:-5px 0 25px rgba(0,0,0,0.7);
+}
+
+.sidebar.active{
+  right:0;
+}
+
+.sidebar h2{
+  margin-bottom:25px;
+  font-size:22px;
+}
+
+.sidebar ul{
+  list-style:none;
+}
+
+.sidebar ul li{
+  margin:18px 0;
+  font-size:16px;
+  cursor:pointer;
+  color:#bbb;
+  transition:0.2s;
+}
+
+.sidebar ul li:hover{
+  color:#fff;
+  transform:translateX(6px);
+}
+
+/* Overlay */
+
+.overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:900;
+}
+
+.overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<!-- NAVBAR -->
+<div class="navbar">
+
+  <div class="top-row">
+    <div class="location">📍 Home - Chattarpally Club</div>
+
+    <div class="icons">
+      <span>🛒</span>
+      <span onclick="openDrawer()">☰</span>
+    </div>
+  </div>
+
+  <div class="search-wrapper">
+    <input type="text" placeholder="Search restaurants, dishes...">
+  </div>
+
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Top Restaurants Near You 🍽️</h1>
+  <p>Delicious food delivered to your doorstep</p>
+</div>
+
+<!-- RESTAURANT GRID -->
+<div class="restaurant-grid">
+
+  <div class="restaurant-card" onclick="openRestaurant()">
+    <div class="offer">50% OFF</div>
+    <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092">
+    <div class="card-content">
+      <h3>Spicy Treats</h3>
+      <div class="details">North Indian • Biryani • Fast Food</div>
+      <div class="rating-time">
+        <div class="rating">4.5 ⭐</div>
+        <div class="time">25-30 mins</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="restaurant-card" onclick="openRestaurant()" >
+    <div class="offer">30% OFF</div>
+    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
+    <div class="card-content">
+      <h3>Burger Hub</h3>
+      <div class="details">Burgers • American • Snacks</div>
+      <div class="rating-time">
+        <div class="rating">4.2 ⭐</div>
+        <div class="time">20-25 mins</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SIDEBAR -->
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="profile">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg">
+      <div>
+        <b>Rahul Sharma</b><br>
+        <small>rahul.s</small>
+      </div>
+    </div>
+    <span class="close-btn" onclick="closeDrawer()">✕</span>
+  </div>
+
+  <div class="menu">
+    <div class="menu-item active" onclick="closeDrawer()">⚡ Home</div>
+    <div class="menu-item" onclick="closeDrawer()">🛒 My Orders</div>
+    <div class="menu-item" onclick="closeDrawer()">
+      📍 Track Delivery<br>
+      <small>Arriving 15 mins</small>
+    </div>
+
+    <hr>
+
+    <div class="menu-item" onclick="closeDrawer()">🌿 Krishak Direct</div>
+    <div class="menu-item" onclick="closeDrawer()">🍔 Restaurants</div>
+    <div class="menu-item" onclick="closeDrawer()">💊 Pharmacy</div>
+
+    <hr>
+
+    <div class="menu-item" onclick="closeDrawer()">👤 My Profile</div>
+    <div class="menu-item" onclick="closeDrawer()">⚙ Settings</div>
+    <div class="menu-item" onclick="closeDrawer()">❓ Help & Support</div>
+
+    <hr>
+
+    <div class="menu-item logout" onclick="closeDrawer()">⏎ Logout</div>
+  </div>
+</div>
+
+<!-- ================= RESTAURANT MENU PAGE ================= -->
+
+<div class="restaurant-menu" id="restaurantMenu">
+
+  <!-- Back Button -->
+  <div class="menu-header">
+    <span onclick="closeRestaurant()">← Back</span>
+  </div>
+
+  <!-- Banner -->
+  <div class="restaurant-banner">
+    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5">
+    <div class="banner-info">
+      <h2>Spicy Treats</h2>
+      <p>North Indian • Biryani • Fast Food</p>
+      <div class="menu-rating">4.5 ⭐ | 25-30 mins</div>
+    </div>
+  </div>
+
+  <!-- Dish List -->
+  <div class="dish-list">
+
+    <!-- Dish Item -->
+    <div class="dish-item">
+      <div class="dish-details">
+        <div class="veg">🟢 Veg</div>
+        <h3>Paneer Butter Masala</h3>
+        <p>₹220</p>
+        <span>Creamy tomato gravy with soft paneer cubes.</span>
+      </div>
+      <div class="dish-image">
+        <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398">
+        <button>Add</button>
+      </div>
+    </div>
+
+    <!-- Dish Item -->
+    <div class="dish-item">
+      <div class="dish-details">
+        <div class="nonveg">🔴 Non-Veg</div>
+        <h3>Chicken Biryani</h3>
+        <p>₹260</p>
+        <span>Hyderabadi style dum biryani.</span>
+      </div>
+      <div class="dish-image">
+        <img src="https://images.unsplash.com/photo-1604908176997-4310b6a3d6f6">
+        <button>Add</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<script>
+
+function openSidebar(){
+  document.getElementById("sidebar").classList.add("active");
+  document.getElementById("overlay").classList.add("active");
+}
+
+function closeSidebar(){
+  document.getElementById("sidebar").classList.remove("active");
+  document.getElementById("overlay").classList.remove("active");
+}
+function openRestaurant(){
+  document.getElementById("restaurantMenu").classList.add("active");
+}
+
+function closeRestaurant(){
+  document.getElementById("restaurantMenu").classList.remove("active");
+}
+function openDrawer(){
+  document.getElementById("drawer").classList.add("active");
+  document.getElementById("overlay").classList.add("active");
+}
+
+function closeDrawer(){
+  document.getElementById("drawer").classList.remove("active");
+  document.getElementById("overlay").classList.remove("active");
+}
+</script>
+
+</body>
+</html>

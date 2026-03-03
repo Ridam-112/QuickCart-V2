@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickCart - Fresh From Farmers</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f2f4f7;
+  overflow-x:hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  display:flex;
+  align-items:center;
+  padding:15px 5%;
+  gap:20px;
+}
+
+.location{
+  font-size:14px;
+  font-weight:500;
+}
+
+.search{
+  flex:1;
+  max-width:600px;
+  height:44px;
+  border:none;
+  border-radius:22px;
+  padding:0 20px;
+  outline:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.icons{
+  margin-left:auto;
+  display:flex;
+  gap:18px;
+}
+
+.icons span{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* ================= DRAWER ================= */
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:-320px;
+  width:320px;
+  height:100%;
+  background:#111;
+  color:white;
+  transition:0.4s;
+  z-index:1000;
+  padding:20px;
+  overflow-y:auto;
+}
+
+.drawer.open{
+  right:0;
+}
+
+.drawer-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.profile{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.profile img{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+}
+
+.close-btn{
+  cursor:pointer;
+  font-size:20px;
+}
+
+.menu-item{
+  padding:12px 0;
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.menu-item:hover{
+  color:#7c5cff;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  margin:30px auto;
+  max-width:1100px;
+  padding:30px;
+  border-radius:30px;
+  background:linear-gradient(135deg,#9ac79a,#75b075);
+  color:white;
+}
+
+.hero h1{
+  font-size:28px;
+}
+
+.hero p{
+  margin-top:8px;
+  opacity:0.9;
+}
+
+/* ================= CATEGORY ================= */
+
+.categories{
+  max-width:1100px;
+  margin:20px auto;
+  padding:0 20px;
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.cat-btn{
+  padding:8px 18px;
+  border-radius:20px;
+  border:none;
+  background:white;
+  cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* ================= PRODUCTS ================= */
+
+.products{
+  max-width:1100px;
+  margin:20px auto 50px;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:25px;
+}
+
+.card{
+  background:white;
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.card img{
+  width:100%;
+  height:170px;
+  object-fit:cover;
+}
+
+.card-content{
+  padding:15px;
+}
+
+.badge{
+  display:inline-block;
+  background:#e6f5e6;
+  color:#2e7d32;
+  padding:4px 10px;
+  border-radius:12px;
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+.product-name{
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+.price{
+  font-weight:bold;
+  margin:5px 0;
+}
+
+.rating{
+  font-size:13px;
+  color:#777;
+}
+
+.add-btn{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:20px;
+  background:#7c5cff;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.add-btn:active{
+  transform:scale(0.95);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+  .hero{
+    margin:20px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="location">📍 Home - Chattarpally Club</div>
+  <input class="search" placeholder="Search fresh vegetables, fruits...">
+  <div class="icons">
+    <span>🛒</span>
+    <span onclick="openDrawer()">☰</span>
+  </div>
+</div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="profile">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg">
+      <div>
+        <b>Rahul Sharma</b><br>
+        <small>rahul.s</small>
+      </div>
+    </div>
+    <span class="close-btn" onclick="closeDrawer()">✕</span>
+  </div>
+
+  <div class="menu-item">⚡ Home</div>
+  <div class="menu-item">🛒 My Orders</div>
+  <div class="menu-item">🍔 Restaurants</div>
+  <div class="menu-item">🌿 Fresh From Farmers</div>
+  <div class="menu-item">⚙ Settings</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>🌿 Fresh From Farmers</h1>
+  <p>Directly sourced organic produce from local farmers</p>
+</div>
+
+<!-- CATEGORY -->
+<div class="categories">
+  <button class="cat-btn">All</button>
+  <button class="cat-btn">Vegetables</button>
+  <button class="cat-btn">Fruits</button>
+  <button class="cat-btn">Dairy</button>
+  <button class="cat-btn">Organic</button>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products">
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce">
+    <div class="card-content">
+      <div class="badge">Organic</div>
+      <div class="product-name">Fresh Tomatoes (1kg)</div>
+      <div class="rating">⭐ 4.5 | Farmer Ramesh</div>
+      <div class="price">₹40</div>
+      <button class="add-btn">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1574226516831-e1dff420e37b">
+    <div class="card-content">
+      <div class="badge">Farm Fresh</div>
+      <div class="product-name">Organic Spinach</div>
+      <div class="rating">⭐ 4.7 | Farmer Suresh</div>
+      <div class="price">₹30</div>
+      <button class="add-btn">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1571689936114-bef5f98e3f8e">
+    <div class="card-content">
+      <div class="badge">Organic</div>
+      <div class="product-name">Fresh Carrots (1kg)</div>
+      <div class="rating">⭐ 4.6 | Farmer Kavita</div>
+      <div class="price">₹50</div>
+      <button class="add-btn">Add to Cart</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+function openDrawer(){
+  document.getElementById("drawer").classList.add("open");
+}
+
+function closeDrawer(){
+  document.getElementById("drawer").classList.remove("open");
+}
+
+</script>
+
+</body>
+</html>

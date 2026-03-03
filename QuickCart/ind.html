@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickCart - Product Details</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f2f4f7;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 5%;
+}
+
+.location{
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(12px);
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:14px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.search{
+  width:100%;
+  max-width:600px;
+  height:44px;
+  border:none;
+  border-radius:22px;
+  padding:0 20px;
+  outline:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.icons{
+  display:flex;
+  gap:15px;
+}
+
+.icons span{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* ================= PRODUCT DETAILS ================= */
+
+.product-page{
+  max-width:1100px;
+  margin:40px auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  align-items:center;
+  padding:0 20px;
+}
+
+.product-image{
+  background:white;
+  border-radius:25px;
+  padding:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+}
+
+.product-image img{
+  width:100%;
+  border-radius:20px;
+}
+
+.product-info{
+  background:white;
+  padding:30px;
+  border-radius:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+}
+
+.product-title{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.rating{
+  color:#ff9800;
+  margin-bottom:10px;
+}
+
+.price{
+  font-size:26px;
+  font-weight:bold;
+  margin:15px 0;
+}
+
+.old-price{
+  text-decoration:line-through;
+  color:gray;
+  font-size:18px;
+  margin-left:10px;
+}
+
+.discount{
+  background:#e7e0ff;
+  color:#7c5cff;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:14px;
+  margin-left:10px;
+}
+
+.delivery-time{
+  background:#f2f4f7;
+  padding:12px;
+  border-radius:15px;
+  margin:15px 0;
+  font-size:14px;
+}
+
+.quantity{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin:20px 0;
+}
+
+.qty-btn{
+  width:35px;
+  height:35px;
+  border:none;
+  border-radius:50%;
+  background:#7c5cff;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.add-cart{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#9ac79a,#75b075);
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.add-cart:hover{
+  transform:scale(1.03);
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+
+.product-desc{
+  margin-top:20px;
+  font-size:14px;
+  color:#555;
+  line-height:1.6;
+}
+
+/* ================= DRAWER ================= */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(3px);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:998;
+}
+
+.overlay.show{
+  opacity:1;
+  visibility:visible;
+}
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  width:320px;
+  max-width:85%;
+  height:100%;
+  background:#f7f7f7;
+  padding:20px;
+  box-shadow:-5px 0 25px rgba(0,0,0,0.2);
+  transition:0.35s ease;
+  z-index:999;
+  transform:translateX(100%);
+}
+
+.drawer.open{
+  transform:translateX(0);
+}
+
+.menu-item{
+  padding:12px;
+  border-radius:14px;
+  cursor:pointer;
+  margin-bottom:6px;
+}
+
+.menu-item:hover{
+  background:rgba(0,0,0,0.05);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+  .navbar{
+    flex-direction:column;
+    gap:15px;
+  }
+
+  .product-page{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="location">📍 Home - Chattarpally Club</div>
+  <input class="search" placeholder="Search for groceries, food...">
+  <div class="icons">
+    <span>🛒</span>
+    <span onclick="openDrawer()">☰</span>
+  </div>
+</div>
+
+<!-- PRODUCT SECTION -->
+<div class="product-page">
+
+  <div class="product-image">
+    <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e">
+  </div>
+
+  <div class="product-info">
+
+    <div class="product-title">Fresh Organic Apples (1kg)</div>
+
+    <div class="rating">
+      ⭐⭐⭐⭐⭐ (4.8) • 1,245 Reviews
+    </div>
+
+    <div class="price">
+      ₹149 
+      <span class="old-price">₹199</span>
+      <span class="discount">25% OFF</span>
+    </div>
+
+    <div class="delivery-time">
+      ⚡ Delivery in 10-20 minutes
+    </div>
+
+    <div class="quantity">
+      <button class="qty-btn" onclick="decreaseQty()">−</button>
+      <span id="qty">1</span>
+      <button class="qty-btn" onclick="increaseQty()">+</button>
+    </div>
+
+    <button class="add-cart">🛒 Add to Cart</button>
+
+    <div class="product-desc">
+      These farm-fresh apples are sourced directly from Krishak farmers.
+      Naturally sweet, juicy, and rich in fiber.
+      Perfect for daily health and immunity.
+    </div>
+
+  </div>
+
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="menu-item">⚡ Home</div>
+  <div class="menu-item">🛒 My Orders</div>
+  <div class="menu-item">📍 Track Delivery</div>
+  <div class="menu-item">👤 My Profile</div>
+  <div class="menu-item">⏎ Logout</div>
+</div>
+
+<script>
+
+/* Quantity Logic */
+let quantity = 1;
+
+function increaseQty(){
+  quantity++;
+  document.getElementById("qty").innerText = quantity;
+}
+
+function decreaseQty(){
+  if(quantity > 1){
+    quantity--;
+    document.getElementById("qty").innerText = quantity;
+  }
+}
+
+/* Drawer Logic */
+function openDrawer(){
+  document.getElementById("drawer").classList.add("open");
+  document.getElementById("overlay").classList.add("show");
+}
+
+function closeDrawer(){
+  document.getElementById("drawer").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
+}
+
+</script>
+
+</body>
+</html>

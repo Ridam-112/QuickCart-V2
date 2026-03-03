@@ -1,0 +1,105 @@
+@media (max-width: 768px) {
+  .categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .search-bar input {
+    width: 60%;
+  }
+
+  .deals {
+    flex-direction: column;
+  }
+
+  .deal {
+    height: 80px;
+  }
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f5f5f5;
+}
+
+header {
+  background: #fff;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.location {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-bar input {
+  width: 70%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.icons span {
+  margin-left: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.delivery-options {
+  display: flex;
+  justify-content: space-around;
+  background: #fff;
+  padding: 10px;
+}
+
+.option {
+  font-weight: bold;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+.category {
+  background: #eee;
+  padding: 15px;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.green { background: #d4edda; }
+.red { background: #f8d7da; }
+.blue { background: #d1ecf1; }
+.purple { background: #e2d6f5; }
+.pink { background: #f5d6eb; }
+.orange { background: #ffe5b4; }
+.brown { background: #e6ccb2; }
+
+.trending {
+  background: #fff;
+  padding: 15px;
+}
+
+.deals {
+  display: flex;
+  gap: 10px;
+}
+
+.deal {
+  flex: 1;
+  background: #ddd;
+  height: 100px;
+  border-radius: 8px;
+}

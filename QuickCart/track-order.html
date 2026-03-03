@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickCart - Track Order</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f2f4f7;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  display:flex;
+  align-items:center;
+  padding:15px 5%;
+  gap:20px;
+}
+
+.location{
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(12px);
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:14px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.search{
+  flex:1;
+  max-width:600px;
+  height:44px;
+  border:none;
+  border-radius:22px;
+  padding:0 20px;
+  outline:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.icons{
+  margin-left:auto;
+  display:flex;
+  gap:18px;
+}
+
+.icons span{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* ================= TRACK PAGE ================= */
+
+.track-page{
+  max-width:800px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+.track-card{
+  background:white;
+  padding:35px;
+  border-radius:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+  position:relative;
+}
+
+.order-info{
+  margin-bottom:30px;
+}
+
+/* ================= TIMELINE ================= */
+
+.timeline{
+  position:relative;
+  padding-left:60px;
+}
+
+/* Vertical Line */
+.timeline::before{
+  content:"";
+  position:absolute;
+  left:30px;
+  top:0;
+  width:4px;
+  height:100%;
+  background:#ddd;
+  border-radius:10px;
+}
+
+/* Truck */
+.truck{
+  position:absolute;
+  left:17px;
+  width:30px;
+  height:30px;
+  background:#7c5cff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:15px;
+  z-index:10;
+  animation:bubble 1.5s infinite;
+}
+
+/* Bubble animation */
+@keyframes bubble{
+  0%{ box-shadow:0 0 0 0 rgba(124,92,255,0.6);}
+  70%{ box-shadow:0 0 0 15px rgba(124,92,255,0);}
+  100%{ box-shadow:0 0 0 0 rgba(124,92,255,0);}
+}
+
+/* Step */
+.step{
+  position:relative;
+  margin-bottom:45px;
+}
+
+/* Station Dot */
+.step::before{
+  content:"";
+  position:absolute;
+  left:-43px;
+  top:6px;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:white;
+  border:4px solid #ddd;
+}
+
+/* Completed */
+.step.completed::before{
+  border-color:#4CAF50;
+  background:#4CAF50;
+}
+
+.step.completed h4{
+  color:#4CAF50;
+}
+
+/* Active */
+.step.active::before{
+  border-color:#7c5cff;
+  background:#7c5cff;
+}
+
+.step.active h4{
+  color:#7c5cff;
+}
+
+.step h4{
+  margin-bottom:5px;
+}
+
+.step p{
+  font-size:14px;
+  color:#666;
+}
+
+/* Delivery Box */
+.delivery-box{
+  margin-top:30px;
+  padding:15px;
+  background:#f2f4f7;
+  border-radius:15px;
+  font-size:14px;
+}
+
+/* Cancel Button */
+.cancel-btn{
+  margin-top:20px;
+  padding:12px 25px;
+  border:none;
+  border-radius:25px;
+  background:#ff4d4d;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.cancel-btn:hover{
+  background:#e60000;
+  transform:scale(1.05);
+}
+
+.cancel-btn:disabled{
+  background:#ccc;
+  cursor:not-allowed;
+}
+
+@media(max-width:768px){
+  .navbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+ 
+  <div class="icons">
+    <span>🛒</span>
+    <span>☰</span>
+  </div>
+</div>
+
+<div class="track-page">
+
+  <div class="track-card">
+
+    <div class="order-info">
+      <h2>Tracking Order: QC102345</h2>
+      <p>Estimated Delivery: 10–20 Minutes</p>
+    </div>
+
+    <div class="timeline">
+
+      <!-- TRUCK -->
+      <div class="truck" id="truck">🚚</div>
+
+      <div class="step completed">
+        <h4>Order Placed Station</h4>
+        <p>Your order has been successfully placed.</p>
+      </div>
+
+      <div class="step completed">
+        <h4>Preparing Station</h4>
+        <p>The seller is preparing your items.</p>
+      </div>
+
+      <div class="step active">
+        <h4>Out for Delivery Station</h4>
+        <p>Your order is on the way 🚀</p>
+      </div>
+
+      <div class="step">
+        <h4>Delivered Station</h4>
+        <p>Package will be delivered to your location.</p>
+      </div>
+
+    </div>
+
+    <div class="delivery-box">
+      📍 Delivering to: Home - Chattarpally Club <br><br>
+      Rider: Rahul Kumar <br>
+      Contact: +91 98765 43210
+    </div>
+
+    <button class="cancel-btn" id="cancelBtn" onclick="cancelOrder()">Cancel Order</button>
+
+  </div>
+
+</div>
+
+<script>
+
+/* Position truck on active step */
+function moveTruck(){
+  const activeStep = document.querySelector(".step.active");
+  const truck = document.getElementById("truck");
+
+  const topPosition = activeStep.offsetTop;
+  truck.style.top = topPosition + "px";
+
+  // Disable cancel if delivered
+  if(activeStep.innerText.includes("Delivered")){
+    document.getElementById("cancelBtn").disabled = true;
+  }
+}
+
+window.onload = moveTruck;
+
+/* Cancel Order */
+function cancelOrder(){
+  alert("Order Cancelled Successfully");
+  document.getElementById("cancelBtn").disabled = true;
+}
+
+</script>
+
+</body>
+</html>

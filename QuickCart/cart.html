@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickCart - Cart</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f2f4f7;
+  overflow-x:hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  display:flex;
+  align-items:center;
+  padding:15px 5%;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.location{
+  font-size:14px;
+  font-weight:500;
+}
+
+.search{
+  flex:1;
+  max-width:600px;
+  height:44px;
+  border:none;
+  border-radius:22px;
+  padding:0 20px;
+  outline:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.icons{
+  margin-left:auto;
+  display:flex;
+  gap:18px;
+}
+
+.icons span{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* ================= DRAWER ================= */
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:-320px;
+  width:320px;
+  height:100%;
+  background:#111;
+  color:white;
+  transition:0.4s;
+  z-index:1000;
+  padding:20px;
+  overflow-y:auto;
+}
+
+.drawer.open{
+  right:0;
+}
+
+.drawer-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.profile{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.profile img{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+}
+
+.close-btn{
+  cursor:pointer;
+  font-size:20px;
+}
+
+.menu-item{
+  padding:12px 0;
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.menu-item:hover{
+  color:#7c5cff;
+}
+
+.logout{
+  color:#ff4d4d;
+}
+
+/* ================= CART ================= */
+
+.cart-page{
+  max-width:1100px;
+  margin:40px auto;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:30px;
+}
+
+.cart-items{
+  background:white;
+  padding:25px;
+  border-radius:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+}
+
+.cart-item{
+  display:flex;
+  gap:20px;
+  padding:15px 0;
+  border-bottom:1px solid #eee;
+  transition:0.4s;
+}
+
+.cart-item.removing{
+  opacity:0;
+  transform:translateX(50px);
+}
+
+.cart-item img{
+  width:90px;
+  border-radius:15px;
+}
+
+.item-info{
+  flex:1;
+}
+
+.item-title{
+  font-size:16px;
+}
+
+.item-price{
+  font-weight:bold;
+  margin-top:5px;
+}
+
+.qty-control{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:10px;
+}
+
+.qty-btn{
+  width:28px;
+  height:28px;
+  border:none;
+  border-radius:50%;
+  background:#7c5cff;
+  color:white;
+  cursor:pointer;
+}
+
+.remove{
+  color:red;
+  font-size:14px;
+  cursor:pointer;
+  margin-top:5px;
+}
+
+/* ================= SUMMARY ================= */
+
+.cart-summary{
+  background:white;
+  padding:25px;
+  border-radius:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+  height:fit-content;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  margin:10px 0;
+}
+
+.total{
+  font-weight:bold;
+  font-size:18px;
+  margin-top:15px;
+}
+
+.checkout-btn{
+  width:100%;
+  padding:15px;
+  margin-top:20px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#9ac79a,#75b075);
+  color:white;
+  cursor:pointer;
+}
+
+.coupon-box{
+  margin-top:15px;
+  display:flex;
+  gap:10px;
+}
+
+.coupon-box input{
+  flex:1;
+  padding:10px;
+  border-radius:20px;
+  border:1px solid #ccc;
+}
+
+.apply-btn{
+  padding:10px 15px;
+  border:none;
+  border-radius:20px;
+  background:#7c5cff;
+  color:white;
+  cursor:pointer;
+}
+
+@media(max-width:768px){
+  .cart-page{
+    grid-template-columns:1fr;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="location">📍 Home - Chattarpally Club</div>
+  <input class="search" placeholder="Search for groceries, food...">
+  <div class="icons">
+    <span>🛒</span>
+    <span onclick="openDrawer()">☰</span>
+  </div>
+</div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="profile">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg">
+      <div>
+        <b>Rahul Sharma</b><br>
+        <small>rahul.s</small>
+      </div>
+    </div>
+    <span class="close-btn" onclick="closeDrawer()">✕</span>
+  </div>
+
+  <div class="menu-item">⚡ Home</div>
+  <div class="menu-item">🛒 My Orders</div>
+  <div class="menu-item">📍 Track Delivery</div>
+  <div class="menu-item">🍔 Restaurants</div>
+  <div class="menu-item">⚙ Settings</div>
+  <div class="menu-item logout">⏎ Logout</div>
+</div>
+
+<!-- CART -->
+<div class="cart-page">
+
+<div class="cart-items">
+
+<h2>Your Cart</h2>
+
+<div class="cart-item" data-price="149">
+<img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e">
+<div class="item-info">
+<div class="item-title">Fresh Apples (1kg)</div>
+<div class="item-price">₹149</div>
+
+<div class="qty-control">
+<button class="qty-btn minus">−</button>
+<span class="qty">1</span>
+<button class="qty-btn plus">+</button>
+</div>
+
+<div class="remove">Remove</div>
+</div>
+</div>
+
+<div class="cart-item" data-price="60">
+<img src="https://images.unsplash.com/photo-1580910051074-3eb694886505">
+<div class="item-info">
+<div class="item-title">Bananas (1 Dozen)</div>
+<div class="item-price">₹60</div>
+
+<div class="qty-control">
+<button class="qty-btn minus">−</button>
+<span class="qty">2</span>
+<button class="qty-btn plus">+</button>
+</div>
+
+<div class="remove">Remove</div>
+</div>
+</div>
+
+</div>
+
+<div class="cart-summary">
+
+<h3>Price Details</h3>
+
+<div class="summary-row">
+<span>Subtotal</span>
+<span id="subtotal">₹0</span>
+</div>
+
+<div class="summary-row">
+<span>Delivery</span>
+<span id="delivery">₹0</span>
+</div>
+
+<div class="summary-row">
+<span>Discount</span>
+<span id="discount">₹0</span>
+</div>
+
+<div class="summary-row total">
+<span>Total</span>
+<span id="total">₹0</span>
+</div>
+
+<div class="coupon-box">
+<input type="text" id="couponInput" placeholder="Enter Coupon Code">
+<button class="apply-btn" onclick="applyCoupon()">Apply</button>
+</div>
+
+<button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+
+</div>
+
+</div>
+
+<script>
+
+let discountAmount = 0;
+
+function updateCart(){
+
+let subtotal = 0;
+
+document.querySelectorAll('.cart-item').forEach(item=>{
+const price = parseInt(item.dataset.price);
+const qty = parseInt(item.querySelector('.qty').innerText);
+subtotal += price * qty;
+});
+
+let delivery = subtotal > 500 || subtotal === 0 ? 0 : 20;
+
+document.getElementById('subtotal').innerText = "₹" + subtotal;
+document.getElementById('delivery').innerText = "₹" + delivery;
+document.getElementById('discount').innerText = "₹" + discountAmount;
+
+const total = subtotal + delivery - discountAmount;
+document.getElementById('total').innerText = "₹" + total;
+}
+
+document.addEventListener("click", function(e){
+
+if(e.target.classList.contains("plus")){
+let qty = e.target.parentElement.querySelector(".qty");
+qty.innerText = parseInt(qty.innerText) + 1;
+updateCart();
+}
+
+if(e.target.classList.contains("minus")){
+let qty = e.target.parentElement.querySelector(".qty");
+if(parseInt(qty.innerText) > 1){
+qty.innerText = parseInt(qty.innerText) - 1;
+updateCart();
+}
+}
+
+if(e.target.classList.contains("remove")){
+let item = e.target.closest(".cart-item");
+item.classList.add("removing");
+setTimeout(()=>{
+item.remove();
+updateCart();
+},400);
+}
+
+});
+
+function applyCoupon(){
+const code = document.getElementById("couponInput").value.trim();
+
+if(code === "SAVE30"){
+discountAmount = 30;
+alert("Coupon Applied! ₹30 Discount");
+}else{
+discountAmount = 0;
+alert("Invalid Coupon");
+}
+
+updateCart();
+}
+
+function openDrawer(){
+document.getElementById("drawer").classList.add("open");
+}
+
+function closeDrawer(){
+document.getElementById("drawer").classList.remove("open");
+}
+
+updateCart(); 
+function proceedToCheckout(){
+  window.location.href = "checkout.html";
+}
+
+</script>
+
+</body>
+</html>
