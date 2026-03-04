@@ -347,18 +347,13 @@ hr{
     <p>🌿 Veg & Fruit</p>
     <button class="glass-btn">Fresh From Farmers</button>
   </div>
-  <a href="restaurant.html" target="_blank" style="text-decoration:none; color:inherit;">
-  <div class="category restaurants" >🍔 Restaurants</div>  </a>
-  <a href="cosmetics.html" target="_blank" style="text-decoration:none; color:inherit;">
-  <div class="category cosmetics">💄 Cosmetics</div> </a>
-  <a href="pharmacy.html" target="_blank" style="text-decoration:none; color:inherit;">
-  <div class="category pharmacy">💊 Pharmacy</div> </a>
-  <a href="garments.html" target="_blank" style="text-decoration:none; color:inherit;">
-  <div class="category garments">👗 Garments</div> </a>
-  <a href="gadgets.html" target="_blank" style="text-decoration:none; color:inherit;">
-  <div class="category gadgets">📱 Gadgets</div></a>
-  <a href="furniture.html" target="_blank" style="text-decoration:none; color:inherit;">
-  <div class="category furniture">🛋 Furniture</div> </a>
+  <div onclick="FoodGo()" class="category restaurants" >🍔 Restaurants</div> 
+  <div class="category cosmetics" onclick="Cosmos()">💄 Cosmetics</div> 
+  <div class="category pharmacy" onclick="Medics()">💊 Pharmacy</div> 
+  <div class="category garments" onclick="Dress()">👗 Garments</div> 
+  <div class="category gadgets" onclick="Phone()">📱 Gadgets</div>
+  <div class="category furniture" onclick="Wood()">🛋 Furniture</div> 
+    <div class="category furniture" onclick="other()">Others</div>
 </div>
 
 <div class="trending">
@@ -404,6 +399,7 @@ hr{
     <hr>
 
     <div class="menu-item logout" onclick="closeDrawer()">⏎ Logout</div>
+  
   </div>
 </div>
 
@@ -452,6 +448,13 @@ function OrderTo(){
 function TrackDelivery(){
   window.location.href = "track-order.html";
 }
+function FoodGo(){
+  window.location.href = "restaurant.html";
+}
+function Cosmos(){
+  window.location.href = "cosmetics.html";
+}
+
 </script>
 
 </body>

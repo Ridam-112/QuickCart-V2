@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickCart - Pharmacy</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f2f4f7;
+  overflow-x:hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  display:flex;
+  align-items:center;
+  padding:15px 5%;
+  gap:20px;
+}
+
+.location{
+  font-size:14px;
+  font-weight:500;
+}
+
+.search{
+  flex:1;
+  max-width:600px;
+  height:44px;
+  border:none;
+  border-radius:22px;
+  padding:0 20px;
+  outline:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.icons{
+  margin-left:auto;
+  display:flex;
+  gap:18px;
+}
+
+.icons span{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* ================= DRAWER (SAME AS YOUR GARMENTS PAGE) ================= */
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:-320px;
+  width:320px;
+  height:100%;
+  background:#111;
+  color:white;
+  transition:0.4s;
+  z-index:1000;
+  padding:20px;
+  overflow-y:auto;
+}
+
+.drawer.open{
+  right:0;
+}
+
+.drawer-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.profile{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.profile img{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+}
+
+.close-btn{
+  cursor:pointer;
+  font-size:20px;
+}
+
+.menu-item{
+  padding:12px 0;
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.menu-item:hover{
+  color:#00c853;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  margin:30px auto;
+  max-width:1100px;
+  padding:30px;
+  border-radius:30px;
+  background:linear-gradient(135deg,#0f9b0f,#00c853);
+  color:white;
+}
+
+.hero h1{
+  font-size:28px;
+}
+
+.hero p{
+  margin-top:8px;
+  opacity:0.9;
+}
+
+/* ================= CATEGORY FILTER ================= */
+
+.categories{
+  max-width:1100px;
+  margin:20px auto;
+  padding:0 20px;
+  display:flex;
+  gap:15px;
+  overflow-x:auto;
+}
+
+.categories::-webkit-scrollbar{
+  display:none;
+}
+
+.category{
+  padding:8px 16px;
+  background:white;
+  border-radius:20px;
+  cursor:pointer;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  font-size:14px;
+  white-space:nowrap;
+}
+
+.category.active{
+  background:#00c853;
+  color:white;
+}
+
+/* ================= PRODUCTS ================= */
+
+.products{
+  max-width:1100px;
+  margin:20px auto 50px;
+  padding:0 20px;
+  display:grid;
+  gap:25px;
+}
+
+@media(max-width:768px){
+  .products{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(min-width:769px){
+  .products{
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  }
+}
+
+.card{
+  background:white;
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+
+.badge{
+  position:absolute;
+  margin:15px;
+  background:#e8f5e9;
+  color:#0f9b0f;
+  padding:5px 10px;
+  border-radius:12px;
+  font-size:12px;
+}
+
+.card-content{
+  padding:15px;
+}
+
+.product-name{
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+.price{
+  font-weight:bold;
+  margin:5px 0;
+}
+
+.add-btn{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:20px;
+  background:#00c853;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.add-btn:active{
+  transform:scale(0.95);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="location">📍 Home - Chattarpally Club</div>
+  <input class="search" placeholder="Search medicines, vitamins...">
+  <div class="icons">
+    <span>🛒</span>
+    <span onclick="openDrawer()">☰</span>
+  </div>
+</div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="profile">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg">
+      <div>
+        <b>Rahul Sharma</b><br>
+        <small>rahul.s</small>
+      </div>
+    </div>
+    <span class="close-btn" onclick="closeDrawer()">✕</span>
+  </div>
+
+  <div class="menu-item">⚡ Home</div>
+  <div class="menu-item">🛒 My Orders</div>
+  <div class="menu-item">💊 Pharmacy</div>
+  <div class="menu-item">⚙ Settings</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>💊 Pharmacy & Healthcare</h1>
+  <p>Medicines delivered in 10–20 minutes from trusted pharmacies</p>
+</div>
+
+<!-- CATEGORY FILTER -->
+<div class="categories">
+  <div class="category active" onclick="filterCategory('all',this)">All</div>
+  <div class="category" onclick="filterCategory('tablet',this)">Tablets</div>
+  <div class="category" onclick="filterCategory('syrup',this)">Syrups</div>
+  <div class="category" onclick="filterCategory('device',this)">Devices</div>
+  <div class="category" onclick="filterCategory('vitamin',this)">Vitamins</div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products">
+
+  <div class="card" data-category="tablet">
+    <img src="https://images.unsplash.com/photo-1580281657527-47e1f5baf0f3">
+    <div class="card-content">
+      <div class="product-name">Paracetamol 650mg</div>
+      <div class="price">₹35</div>
+      <button class="add-btn">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="card" data-category="vitamin">
+    <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5">
+    <div class="card-content">
+      <div class="product-name">Vitamin C Tablets</div>
+      <div class="price">₹120</div>
+      <button class="add-btn">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="card" data-category="device">
+    <img src="https://images.unsplash.com/photo-1603398938378-3d1f4f4caa0d">
+    <div class="card-content">
+      <div class="product-name">Digital Thermometer</div>
+      <div class="price">₹249</div>
+      <button class="add-btn">Add to Cart</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+function openDrawer(){
+  document.getElementById("drawer").classList.add("open");
+}
+
+function closeDrawer(){
+  document.getElementById("drawer").classList.remove("open");
+}
+
+function filterCategory(category,element){
+
+  document.querySelectorAll(".category").forEach(c=>{
+    c.classList.remove("active");
+  });
+
+  element.classList.add("active");
+
+  document.querySelectorAll(".card").forEach(card=>{
+    if(category==="all" || card.getAttribute("data-category")===category){
+      card.style.display="";
+    }else{
+      card.style.display="none";
+    }
+  });
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickCart - Garments</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f2f4f7;
+  overflow-x:hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  display:flex;
+  align-items:center;
+  padding:15px 5%;
+  gap:20px;
+}
+
+.location{
+  font-size:14px;
+  font-weight:500;
+}
+
+.search{
+  flex:1;
+  max-width:600px;
+  height:44px;
+  border:none;
+  border-radius:22px;
+  padding:0 20px;
+  outline:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.icons{
+  margin-left:auto;
+  display:flex;
+  gap:18px;
+}
+
+.icons span{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* ================= DRAWER ================= */
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:-320px;
+  width:320px;
+  height:100%;
+  background:#111;
+  color:white;
+  transition:0.4s;
+  z-index:1000;
+  padding:20px;
+  overflow-y:auto;
+}
+
+.drawer.open{
+  right:0;
+}
+
+.drawer-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.profile{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.profile img{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+}
+
+.close-btn{
+  cursor:pointer;
+  font-size:20px;
+}
+
+.menu-item{
+  padding:12px 0;
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.menu-item:hover{
+  color:#7c5cff;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  margin:30px auto;
+  max-width:1100px;
+  padding:30px;
+  border-radius:30px;
+  background:linear-gradient(135deg,#6a11cb,#2575fc);
+  color:white;
+}
+
+.hero h1{
+  font-size:28px;
+}
+
+.hero p{
+  margin-top:8px;
+  opacity:0.9;
+}
+
+/* ================= SHOPS ================= */
+
+.shop-header{
+  max-width:1100px;
+  margin:20px auto 10px;
+  padding:0 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.see-all{
+  font-size:14px;
+  cursor:pointer;
+  color:#7c5cff;
+}
+
+.shops{
+  max-width:1100px;
+  margin:10px auto 20px;
+  padding:0 20px;
+  display:flex;
+  gap:20px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+}
+
+.shops::-webkit-scrollbar{
+  display:none;
+}
+
+.shop{
+  text-align:center;
+  cursor:pointer;
+  scroll-snap-align:start;
+}
+
+.shop img{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  object-fit:cover;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.shop.active img{
+  outline:3px solid #7c5cff;
+}
+
+.shop p{
+  font-size:12px;
+  margin-top:6px;
+}
+
+/* ================= PRODUCTS ================= */
+
+.products{
+  max-width:1100px;
+  margin:20px auto 50px;
+  padding:0 20px;
+  display:grid;
+  gap:25px;
+}
+
+@media(max-width:768px){
+  .products{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(min-width:769px){
+  .products{
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  }
+}
+
+.card{
+  background:white;
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+  transition:0.3s;
+  position:relative;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+.wishlist{
+  position:absolute;
+  top:15px;
+  right:15px;
+  font-size:22px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.wishlist.active{
+  color:#ff3b5c;
+  animation:pop 0.3s ease;
+}
+
+@keyframes pop{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.4);}
+  100%{transform:scale(1);}
+}
+
+.card-content{
+  padding:15px;
+}
+
+.badge{
+  display:inline-block;
+  background:#f3e8ff;
+  color:#6a11cb;
+  padding:4px 10px;
+  border-radius:12px;
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+.product-name{
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+.price{
+  font-weight:bold;
+  margin:5px 0;
+}
+
+.rating{
+  font-size:13px;
+  color:#777;
+}
+
+.add-btn{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:20px;
+  background:#7c5cff;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.add-btn:active{
+  transform:scale(0.95);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="location">📍 Home - Chattarpally Club</div>
+  <input class="search" placeholder="Search t-shirts, jeans, kurtis...">
+  <div class="icons">
+    <span>🛒</span>
+    <span onclick="openDrawer()">☰</span>
+  </div>
+</div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="profile">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg">
+      <div>
+        <b>Rahul Sharma</b><br>
+        <small>rahul.s</small>
+      </div>
+    </div>
+    <span class="close-btn" onclick="closeDrawer()">✕</span>
+  </div>
+
+  <div class="menu-item">⚡ Home</div>
+  <div class="menu-item">🛒 My Orders</div>
+  <div class="menu-item">👕 Garments</div>
+  <div class="menu-item">⚙ Settings</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>👕 Trendy Garments Collection</h1>
+  <p>Stylish outfits delivered to your doorstep in 2 hours</p>
+</div>
+
+<!-- SHOPS -->
+<div class="shop-header">
+  <h3>Popular Garment Shops</h3>
+  <div class="see-all" onclick="resetFilter()">See All</div>
+</div>
+
+<div class="shops">
+
+  <div class="shop active" onclick="filterShop('all', this)">
+    <img src="https://images.unsplash.com/photo-1521335629791-ce4aec67dd47">
+    <p>All</p>
+  </div>
+
+  <div class="shop" onclick="filterShop('Fashion Hub', this)">
+    <img src="https://images.unsplash.com/photo-1521335629791-ce4aec67dd47">
+    <p>Fashion Hub</p>
+  </div>
+
+  <div class="shop" onclick="filterShop('Urban Wear', this)">
+    <img src="https://images.unsplash.com/photo-1495121605193-b116b5b09a5b">
+    <p>Urban Wear</p>
+  </div>
+
+  <div class="shop" onclick="filterShop('Style Store', this)">
+    <img src="https://images.unsplash.com/photo-1520975922203-b7b6f75f0b6b">
+    <p>Style Store</p>
+  </div>
+
+</div>
+
+<!-- PRODUCTS -->
+<div class="products">
+
+  <div class="card" data-shop="Fashion Hub">
+    <div class="wishlist" onclick="toggleWish(this)">♡</div>
+    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab">
+    <div class="card-content">
+      <div class="badge">2 Hr Delivery</div>
+      <div class="product-name">Men Casual T-Shirt</div>
+      <div class="rating">⭐ 4.6 | Fashion Hub</div>
+      <div class="price">₹599</div>
+      <button class="add-btn">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="card" data-shop="Urban Wear">
+    <div class="wishlist" onclick="toggleWish(this)">♡</div>
+    <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03">
+    <div class="card-content">
+      <div class="badge">2 Hr Delivery</div>
+      <div class="product-name">Women Floral Kurti</div>
+      <div class="rating">⭐ 4.8 | Urban Wear</div>
+      <div class="price">₹899</div>
+      <button class="add-btn">Add to Cart</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+function openDrawer(){
+  document.getElementById("drawer").classList.add("open");
+}
+
+function closeDrawer(){
+  document.getElementById("drawer").classList.remove("open");
+}
+
+function filterShop(shop, element){
+  document.querySelectorAll(".shop").forEach(s=>s.classList.remove("active"));
+  element.classList.add("active");
+
+  document.querySelectorAll(".card").forEach(card=>{
+    if(shop==="all" || card.getAttribute("data-shop")===shop){
+      card.style.display="";
+    }else{
+      card.style.display="none";
+    }
+  });
+}
+
+function resetFilter(){
+  document.querySelectorAll(".shop").forEach(s=>s.classList.remove("active"));
+  document.querySelector(".shop").classList.add("active");
+  document.querySelectorAll(".card").forEach(card=>card.style.display="");
+}
+
+function toggleWish(el){
+  el.classList.toggle("active");
+  el.innerHTML = el.classList.contains("active") ? "❤" : "♡";
+}
+
+</script>
+
+</body>
+</html>
